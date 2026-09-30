@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Science Lab | Rizqi Ghani Adinata — Junior Data Scientist Portfolio</title>
+<meta name="description" content="Peta proyek Junior Data Science — 12 proyek end-to-end dari EDA, ML, NLP, CV, Time Series, hingga LLM/RAG. Portofolio Rizqi Ghani Adinata.">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#050a07;
+  --bg-2:#0a120c;
+  --panel:#0c150e;
+  --panel-2:#101b12;
+  --line:#1d3122;
+  --line-2:#28452f;
+  --ink:#d9e8dc;
+  --ink-dim:#8fa896;
+  --ink-faint:#5c7563;
+  --green:#2bd57f;
+  --green-hi:#4dff9e;
+  --phos:#00ff9c;
+  --amber:#f5c84c;
+  --red:#ff5f56;
+  --cyan:#4dd8ff;
+  --mag:#c17bff;
+  --mono:ui-monospace,"Cascadia Mono","JetBrains Mono",Consolas,"Source Code Pro",monospace;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --maxw:1280px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--mono);font-size:16px;line-height:1.65;overflow-x:hidden}
+::selection{background:rgba(43,213,127,.3)}
+a{color:var(--green);text-decoration:none}
+a:hover{color:var(--green-hi);text-shadow:0 0 8px rgba(43,213,127,.6)}
+:focus-visible{outline:2px solid var(--green-hi);outline-offset:3px;border-radius:2px}
+.skip-link{position:absolute;left:-9999px;top:0;z-index:200;background:var(--green);color:#04170c;padding:.6rem 1rem;font-weight:700}
+.skip-link:focus{left:8px;top:8px}
+
+/* ============ BACKGROUND ============ */
+#matrix{position:fixed;inset:0;z-index:-3;opacity:.22;pointer-events:none}
+.grid-overlay{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(rgba(43,213,127,.045) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(43,213,127,.045) 1px,transparent 1px);background-size:44px 44px}
+.vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,transparent 40%,rgba(2,6,3,.85) 100%)}
+.crt{position:fixed;inset:0;z-index:90;pointer-events:none;mix-blend-mode:multiply;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px);
+  animation:flicker 7s infinite steps(60)}
+@keyframes flicker{0%,100%{opacity:.55}3%{opacity:.35}6%{opacity:.6}9%{opacity:.42}45%{opacity:.55}46%{opacity:.7}47%{opacity:.4}}
+
+/* ============ HEADER ============ */
+.site-header{position:sticky;top:0;z-index:80;background:rgba(5,10,7,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.header-inner{max-width:var(--maxw);margin:0 auto;padding:.8rem 1.25rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.25}
+.brand .name{font-size:1.05rem;font-weight:700;color:var(--ink);letter-spacing:.06em}
+.brand .name::before{content:"▚ ";color:var(--green)}
+.brand .sub{font-size:.72rem;color:var(--ink-dim);letter-spacing:.12em;text-transform:uppercase}
+.status-led{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--phos);animation:pulse 1.6s infinite;margin-right:.5rem;vertical-align:middle}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.main-nav{margin-left:auto;display:flex;gap:.25rem;flex-wrap:wrap}
+.main-nav a{font-size:.8rem;letter-spacing:.08em;color:var(--ink-dim);padding:.45rem .7rem;border:1px solid transparent;text-transform:uppercase}
+.main-nav a .num{color:var(--green);margin-right:.3rem}
+.main-nav a:hover{color:var(--green-hi);border-color:var(--line-2);text-shadow:0 0 8px rgba(43,213,127,.7)}
+
+/* ============ HERO ============ */
+.hero{max-width:var(--maxw);margin:0 auto;padding:4rem 1.25rem 3rem;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:3rem;align-items:start}
+.hero-kicker{font-size:.78rem;letter-spacing:.25em;text-transform:uppercase;color:var(--green);margin:0 0 1rem}
+.hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:1.12;margin:0 0 1.2rem;letter-spacing:-.01em}
+.hero h1 .hl{color:var(--green)}
+.type-line{min-height:1.6em;color:var(--phos);font-size:1rem;margin:0 0 1.4rem}
+.type-line::before{content:"$ ";color:var(--ink-faint)}
+.caret{display:inline-block;width:.6em;background:var(--green);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero p.lede{color:var(--ink-dim);margin:0 0 1.8rem;max-width:56ch}
+.cta-row{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn{display:inline-block;padding:.7rem 1.3rem;border:1px solid var(--green);color:#04170c;background:var(--green);font-weight:700;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;font-size:.8rem}
+.btn:hover{background:var(--green-hi);border-color:var(--green-hi);box-shadow:0 0 18px rgba(43,213,127,.55);text-shadow:none;color:#04170c}
+.btn.ghost{background:transparent;color:var(--green)}
+.btn.ghost:hover{background:rgba(43,213,127,.1);color:var(--green-hi)}
+/* terminal card */
+.term{background:var(--panel);border:1px solid var(--line-2);box-shadow:0 0 0 1px rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.5)}
+.term-bar{display:flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border-bottom:1px solid var(--line);background:var(--bg-2)}
+.dot{width:10px;height:10px;border-radius:50%}
+.term-body{padding:1rem;font-size:.82rem;line-height:1.8;min-height:220px}
+.term-body .ok{color:var(--green)}.term-body .warn{color:var(--amber)}.term-body .dim{color:var(--ink-faint)}.term-body .cy{color:var(--cyan)}.term-body .mg{color:var(--mag)}
+
+/* ============ SECTIONS ============ */
+section{max-width:var(--maxw);margin:0 auto;padding:3.5rem 1.25rem}
+.sec-head{margin:0 0 2rem}
+.sec-head .tag{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--green)}
+.sec-head h2{font-family:var(--sans);font-size:clamp(1.5rem,3vw,2.2rem);margin:.4rem 0 .3rem}
+.sec-head h2::before{content:"// "}
+.sec-head p{color:var(--ink-dim);margin:.2rem 0 0;max-width:70ch}
+
+/* ============ FILTER ============ */
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 1.6rem}
+.filter-btn{background:var(--panel);border:1px solid var(--line-2);color:var(--ink-dim);font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;padding:.45rem .9rem;cursor:pointer;text-transform:uppercase}
+.filter-btn:hover{color:var(--green-hi);border-color:var(--green)}
+.filter-btn.active{background:var(--green);color:#04170c;border-color:var(--green);font-weight:700}
+
+/* ============ PROJECT CARDS ============ */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.2rem}
+.card{background:var(--panel);border:1px solid var(--line);padding:1.2rem;position:relative;display:flex;flex-direction:column;gap:.7rem;transition:border-color .2s,transform .2s,box-shadow .2s}
+.card:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.55),0 0 0 1px rgba(43,213,127,.35)}
+.card[hidden]{display:none}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem}
+.card-id{font-size:.7rem;color:var(--ink-faint);letter-spacing:.15em}
+.card h3{margin:0;font-family:var(--sans);font-size:1.08rem;line-height:1.3}
+.card h3::before{content:"> ";color:var(--green)}
+.card p{margin:0;color:var(--ink-dim);font-size:.85rem}
+.badges{display:flex;gap:.4rem;flex-wrap:wrap}
+.badge{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line-2);padding:.18rem .5rem;color:var(--ink-dim)}
+.badge.lv1{border-color:var(--green);color:var(--green)}
+.badge.lv2{border-color:var(--amber);color:var(--amber)}
+.badge.lv3{border-color:var(--red);color:var(--red)}
+.badge.st-done{border-color:var(--green);color:var(--green)}
+.badge.st-wip{border-color:var(--cyan);color:var(--cyan)}
+.badge.st-plan{border-color:var(--mag);color:var(--mag)}
+details.card-more{border-top:1px dashed var(--line-2);padding-top:.6rem;font-size:.8rem}
+details.card-more summary{cursor:pointer;color:var(--green);text-transform:uppercase;letter-spacing:.1em;font-size:.7rem}
+details.card-more[open] summary{color:var(--green-hi)}
+.card-more h4{margin:.8rem 0 .3rem;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan)}
+.card-more ol,.card-more ul{margin:0;padding-left:1.2rem;color:var(--ink-dim)}
+.card-more li{margin:.25rem 0}
+.stack{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:auto;padding-top:.4rem}
+.chip{font-size:.68rem;background:var(--bg-2);border:1px solid var(--line);color:var(--phos);padding:.15rem .5rem}
+
+/* ============ ROADMAP ============ */
+.road{display:grid;gap:0}
+.phase{display:grid;grid-template-columns:auto 1fr;gap:1.2rem;padding:1.2rem 0;border-bottom:1px dashed var(--line)}
+.phase:last-child{border-bottom:none}
+.phase-num{font-family:var(--sans);font-weight:800;font-size:1.6rem;color:var(--green);border:1px solid var(--line-2);padding:.3rem .9rem;background:var(--panel);align-self:start}
+.phase h3{margin:0 0 .3rem;font-family:var(--sans);font-size:1.05rem}
+.phase h3::after{content:" _";color:var(--green)}
+.phase p{margin:0 0 .5rem;color:var(--ink-dim);font-size:.88rem}
+.phase .meta{font-size:.75rem;color:var(--ink-faint)}
+.phase .meta b{color:var(--amber);font-weight:600}
+
+/* ============ STACK MATRIX ============ */
+.matrix-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem}
+.tool{border:1px solid var(--line);background:var(--panel);padding:.8rem 1rem;font-size:.82rem}
+.tool b{color:var(--phos);display:block;font-size:.9rem}
+.tool span{color:var(--ink-faint);font-size:.72rem}
+
+/* ============ FOOTER ============ */
+footer{border-top:1px solid var(--line);background:var(--bg-2)}
+.foot-inner{max-width:var(--maxw);margin:0 auto;padding:2rem 1.25rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.78rem;color:var(--ink-faint)}
+.foot-inner a{color:var(--green)}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:3rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#projects">Lewati ke proyek</a>
+<canvas id="matrix" aria-hidden="true"></canvas>
+<div class="grid-overlay" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="crt" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="name"><span class="status-led" aria-hidden="true"></span>DATA//SCIENCE//LAB</span>
+      <span class="sub">Rizqi Ghani Adinata · Junior Data Scientist</span>
+    </div>
+    <nav class="main-nav" aria-label="Navigasi utama">
+      <a href="#projects"><span class="num">01</span>Proyek</a>
+      <a href="#roadmap"><span class="num">02</span>Roadmap</a>
+      <a href="#stack"><span class="num">03</span>Stack</a>
+      <a href="#contact"><span class="num">04</span>Kontak</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div>
+    <p class="hero-kicker">// Project Atlas — Junior Data Science Track</p>
+    <h1>12 Proyek <span class="hl">Data Science</span> End-to-End, dari EDA sampai <span class="hl">LLM/RAG</span></h1>
+    <p class="type-line"><span id="typed"></span><span class="caret">&nbsp;</span></p>
+    <p class="lede">Peta belajar dan portofolio yang disusun berjenjang: setiap proyek punya masalah nyata,
+      langkah kerja, metrik evaluasi, dan hasil yang bisa dipublikasikan. Dimulai dari data analisis dasar
+      hingga model ML yang di-deploy sebagai API.</p>
+    <div class="cta-row">
+      <a class="btn" href="#projects">Lihat Proyek</a>
+      <a class="btn ghost" href="https://github.com/ghani24ep10007-spec" target="_blank" rel="noopener">GitHub Saya →</a>
+    </div>
+  </div>
+  <div class="term" aria-hidden="true">
+    <div class="term-bar">
+      <span class="dot" style="background:var(--red)"></span>
+      <span class="dot" style="background:var(--amber)"></span>
+      <span class="dot" style="background:var(--green)"></span>
+      <span style="margin-left:.6rem;font-size:.72rem;color:var(--ink-faint)">lab@ds: ~/projects</span>
+    </div>
+    <div class="term-body" id="term-out"></div>
+  </div>
+</div>
+
+<section id="projects">
+  <div class="sec-head">
+    <p class="tag">01 · Project Atlas</p>
+    <h2>Daftar Proyek</h2>
+    <p>Dua belas proyek yang mencerminkan profil <b>Junior Data Scientist</b>: kuat di fondasi statistik &amp; Python,
+      paham alur ML end-to-end (EDA → feature → model → evaluasi → deploy), dan terbiasa mendokumentasikan hasil.
+      Klik <b>DEEP DIVE</b> pada kartu untuk langkah kerja dan apa yang dipelajari.</p>
+  </div>
+
+  <div class="filters" role="toolbar" aria-label="Filter kategori">
+    <button class="filter-btn active" data-f="all">Semua (12)</button>
+    <button class="filter-btn" data-f="analytics">Analytics &amp; EDA</button>
+    <button class="filter-btn" data-f="ml">Classical ML</button>
+    <button class="filter-btn" data-f="nlp">NLP</button>
+    <button class="filter-btn" data-f="cv">Computer Vision</button>
+    <button class="filter-btn" data-f="ts">Time Series</button>
+    <button class="filter-btn" data-f="de">Data Engineering</button>
+    <button class="filter-btn" data-f="llm">LLM &amp; GenAI</button>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <article class="card" data-cat="analytics">
+      <div class="card-top"><div><p class="card-id">DS-001</p><h3>EDA &amp; Dashboard: UMR &amp; Pasar Kerja Indonesia</h3></div><span class="badge lv1">Beginner</span></div>
+      <p>Analisis eksploratif dataset upah/lowongan kerja publik: distribusi, outlier, tren per provinsi, dan dashboard interaktif.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">Pandas</span><span class="badge">Visualisasi</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Ambil &amp; bersih-bersih data (dtype, missing, outlier)</li>
+          <li>Univariate → bivariate analysis, hipotesis awal</li>
+          <li>Bangun dashboard Streamlit dengan filter wilayah/jabatan</li>
+          <li>Tulis insight 5 poin di README + notebook terdokumentasi</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Data cleaning &amp; eksplorasi sistematis</li><li>Bercerita dengan data (data storytelling)</li><li>Metrik: tidak ada model — fokus kualitas insight</li></ul>
+      </details>
+      <div class="stack"><span class="chip">Python</span><span class="chip">Pandas</span><span class="chip">Matplotlib</span><span class="chip">Plotly</span><span class="chip">Streamlit</span></div>
+    </article>
+
+    <article class="card" data-cat="analytics">
+      <div class="card-top"><div><p class="card-id">DS-002</p><h3>Analisis Statistik &amp; A/B Testing</h3></div><span class="badge lv1">Beginner</span></div>
+      <p>Uji hipotesis pada data eksperimen nyata: uji-t, chi-square, power analysis, dan interpretasi hasil untuk keputusan bisnis.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">Statistik</span><span class="badge">SciPy</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Simulasi/ambil dataset eksperimen (mis. konversi web)</li>
+          <li>Hitung ukuran efek, CI 95%, dan power test</li>
+          <li>Bandingkan parametrik vs non-parametrik</li>
+          <li>Simpulkan: signifikansi ≠ relevansi bisnis</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Fondasi inferensi statistik — bekal wajib sebelum ML</li><li>Menghindari jebakan p-hacking &amp; multiple testing</li></ul>
+      </details>
+      <div class="stack"><span class="chip">SciPy</span><span class="chip">Statsmodels</span><span class="chip">Seaborn</span></div>
+    </article>
+
+    <article class="card" data-cat="ml">
+      <div class="card-top"><div><p class="card-id">DS-003</p><h3>Prediksi Churn Pelanggan</h3></div><span class="badge lv2">Intermediate</span></div>
+      <p>Klasifikasi pelanggan berisiko keluar: Logistic Regression sebagai baseline, lalu gradient boosting, dengan penanganan kelas tidak seimbang.</p>
+      <div class="badges"><span class="badge st-wip">In Progress</span><span class="badge">Klasifikasi</span><span class="badge">Imbalanced</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>EDA + feature engineering (RFM-like, tenure, usage)</li>
+          <li>Baseline: Logistic Regression + kalibrasi probabilitas</li>
+          <li>Model 2: XGBoost/LightGBM + SMOTE/class_weight</li>
+          <li>Evaluasi: ROC-AUC, PR-AUC, recall on churners, business cost matrix</li>
+          <li>Interpretasi dengan SHAP + rekomendasi retensi</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Metric selection untuk kelas imbang</li><li>Explainability &amp; menerjemahkan model ke aksi bisnis</li></ul>
+      </details>
+      <div class="stack"><span class="chip">scikit-learn</span><span class="chip">XGBoost</span><span class="chip">imbalanced-learn</span><span class="chip">SHAP</span></div>
+    </article>
+
+    <article class="card" data-cat="ml">
+      <div class="card-top"><div><p class="card-id">DS-004</p><h3>Prediksi Harga Properti + API Deployment</h3></div><span class="badge lv2">Intermediate</span></div>
+      <p>Regresi harga rumah/kamar kos: pipeline lengkap dari validasi cross-folding sampai model disajikan sebagai web app.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">Regresi</span><span class="badge">MLOps-lite</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Baseline linear, lalu RandomForest/GradientBoosting</li>
+          <li>Pipeline scikit-learn (preprocessing di dalam pipeline, anti leakage)</li>
+          <li>Evaluasi MAE/RMSE + residual analysis</li>
+          <li>Serve dengan FastAPI, input validasi Pydantic</li>
+          <li>Frontend sederhana / Streamlit untuk demo</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li> leakage prevention via Pipeline</li><li>Mendeploy model — nilai tambah besar di CV junior</li></ul>
+      </details>
+      <div class="stack"><span class="chip">scikit-learn</span><span class="chip">FastAPI</span><span class="chip">joblib</span><span class="chip">Docker</span></div>
+    </article>
+
+    <article class="card" data-cat="ml">
+      <div class="card-top"><div><p class="card-id">DS-005</p><h3>Segmentasi Pelanggan (K-Means + RFM)</h3></div><span class="badge lv1">Beginner</span></div>
+      <p>Clustering pelanggan retail berdasarkan Recency-Frequency-Monetary untuk strategi marketing per segmen.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">Unsupervised</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Construct RFM dari data transaksi</li>
+          <li>Scaling + pilih k (elbow, silhouette)</li>
+          <li>Profil tiap cluster, beri nama segmen bisnis</li>
+          <li>Visualisasi PCA 2D + rekomendasi per segmen</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Unsupervised learning &amp; evaluasi tanpa label</li><li>Menerjemahkan cluster jadi bahasa bisnis</li></ul>
+      </details>
+      <div class="stack"><span class="chip">scikit-learn</span><span class="chip">PCA</span><span class="chip">Plotly</span></div>
+    </article>
+
+    <article class="card" data-cat="ts">
+      <div class="card-top"><div><p class="card-id">DS-006</p><h3>Peramalan Penjualan (Time Series)</h3></div><span class="badge lv2">Intermediate</span></div>
+      <p>Forecast penjualan harian/bulanan: dekomposisi tren-musiman, baseline naïve → ARIMA/ETS → Prophet, backtesting jujur.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">Forecasting</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Stasioneritas (ADF test) &amp; dekomposisi</li>
+          <li>Baseline kuat: seasonal naïve (wajib dikalahkan model maju)</li>
+          <li>SARIMAX / Prophet + fitur holiday</li>
+          <li>Rolling-origin backtest, metrik MAPE &amp; RMSE</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Disiplin evaluasi time series (no shuffling!)</li><li>Harga sebuah baseline</li></ul>
+      </details>
+      <div class="stack"><span class="chip">pandas</span><span class="chip">statsmodels</span><span class="chip">Prophet</span></div>
+    </article>
+
+    <article class="card" data-cat="nlp">
+      <div class="card-top"><div><p class="card-id">DS-007</p><h3>Analisis Sentimen Ulasan Bahasa Indonesia</h3></div><span class="badge lv2">Intermediate</span></div>
+      <p>Klasifikasi sentimen (positif/netral/negatif) ulasan produk/aplikasi berbahasa Indonesia dari baseline lexicon ke TF-IDF+Linear hingga transformer.</p>
+      <div class="badges"><span class="badge st-wip">In Progress</span><span class="badge">NLP</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Scraping/dataset publik + pelabelan (bisa weak supervision)</li>
+          <li>Preprocessing: normalization, slang dictionary, stemming</li>
+          <li>Baseline lexicon → TF-IDF + Logistic Regression</li>
+          <li>Fine-tune IndoBERT (bandingkan vs baseline)</li>
+          <li>Evaluasi macro-F1 + confusion matrix + error analysis</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>NLP bahasa Indonesia punya tantangan sendiri (slang, code-mixing)</li><li>Trade-off model klasik vs transformer</li></ul>
+      </details>
+      <div class="stack"><span class="chip">NLTK</span><span class="chip">scikit-learn</span><span class="chip">HuggingFace</span><span class="chip">IndoBERT</span></div>
+    </article>
+
+    <article class="card" data-cat="ml">
+      <div class="card-top"><div><p class="card-id">DS-008</p><h3>Sistem Rekomendasi Sederhana</h3></div><span class="badge lv2">Intermediate</span></div>
+      <p>Rekomendasi film/barang dengan collaborative filtering (matrix factorization) dan content-based similarity.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">Recommender</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Dataset MovieLens, eksplorasi sparsity</li>
+          <li>Content-based: cosine similarity TF-IDF</li>
+          <li>Collaborative: SVD / ALS</li>
+          <li>Evaluasi ranking: Precision@K, NDCG, coverage</li>
+          <li>Demo: "10 judul untuk user X" via Streamlit</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Evaluasi berbasis ranking, bukan akurasi</li><li>Masalah cold-start</li></ul>
+      </details>
+      <div class="stack"><span class="chip">scikit-learn</span><span class="chip">Surprise</span><span class="chip">Streamlit</span></div>
+    </article>
+
+    <article class="card" data-cat="cv">
+      <div class="card-top"><div><p class="card-id">DS-009</p><h3>Klasifikasi Citra dengan Transfer Learning</h3></div><span class="badge lv2">Intermediate</span></div>
+      <p>Klasifikasi gambar nyata (mis. penyakit daun / sampah) memakai CNN pretrained: frozen features lalu fine-tuning.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">Computer Vision</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Dataset kecil → augmentasi (rotation, flip, color jitter)</li>
+          <li>MobileNet/ResNet frozen + head classifier</li>
+          <li>Fine-tune layer akhir, early stopping</li>
+          <li>Grad-CAM: visualisasi area gambar yang diprediksi</li>
+          <li>Evaluasi accuracy, macro-F1, confusion matrix</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Transfer learning = cara paling realistis masuk deep learning sebagai junior</li><li>Interpretability dengan Grad-CAM</li></ul>
+      </details>
+      <div class="stack"><span class="chip">TensorFlow/Keras</span><span class="chip">PyTorch</span><span class="chip">OpenCV</span></div>
+    </article>
+
+    <article class="card" data-cat="de">
+      <div class="card-top"><div><p class="card-id">DS-010</p><h3>Pipeline ETL + SQL Analytics</h3></div><span class="badge lv1">Beginner</span></div>
+      <p>Otomatisasi pengambilan data publik → cleaning → load ke PostgreSQL → metrik bisnis via SQL → jadwal berjalan otomatis.</p>
+      <div class="badges"><span class="badge st-done">Showcase</span><span class="badge">Data Engineering</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>API publik (mis. harga komoditas) → fetch harian</li>
+          <li>Cleaning dengan pandas + validasi skema</li>
+          <li>Load ke PostgreSQL (idempotent, upsert)</li>
+          <li>Materiized view / query agregat untuk KPI</li>
+          <li>Scheduler: cron / GitHub Actions, log &amp; alerting sederhana</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Data skill yang paling sering dipakai di pekerjaan nyata</li><li>SQL tingkat menengah adalah pembeda kandidat junior</li></ul>
+      </details>
+      <div class="stack"><span class="chip">SQL/PostgreSQL</span><span class="chip">Python</span><span class="chip">GitHub Actions</span></div>
+    </article>
+
+    <article class="card" data-cat="llm">
+      <div class="card-top"><div><p class="card-id">DS-011</p><h3>Chatbot RAG: Tanya-Jawab Dokumen</h3></div><span class="badge lv3">Advanced-Junior</span></div>
+      <p>Sistem question-answering di atas koleksi dokumen (PDF skripsi/modul) dengan retrieval vector + LLM, lengkap dengan evaluasi jawaban.</p>
+      <div class="badges"><span class="badge st-plan">Planned</span><span class="badge">LLM</span><span class="badge">RAG</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Chunking &amp; embedding dokumen (model lokal/API)</li>
+          <li>Vector store (Chroma/FAISS) + retrieval top-k</li>
+          <li>Prompt templating + jawaban dengan sitasi sumber</li>
+          <li>Evaluasi: retrieval hit-rate + LLM-as-judge sederhana</li>
+          <li>Guardrail: tolak jawab bila konteks tidak cukup</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Teknologi paling dicari saat ini — bahkan untuk junior</li><li>Bahwa evaluasi output LLM adalah pekerjaan data science juga</li></ul>
+      </details>
+      <div class="stack"><span class="chip">LangChain</span><span class="chip">FAISS/Chroma</span><span class="chip">OpenAI/Ollama</span><span class="chip">Streamlit</span></div>
+    </article>
+
+    <article class="card" data-cat="analytics">
+      <div class="card-top"><div><p class="card-id">DS-012</p><h3>Kaggle Grand Tour (3 Kompetisi)</h3></div><span class="badge lv2">Intermediate</span></div>
+      <p>Tiga kompetisi bertingkat: Titanic (klasifikasi dasar), House Prices (regresi+feature eng), satu kompetisi NLP/CV untuk latihan end-to-end.</p>
+      <div class="badges"><span class="badge st-wip">In Progress</span><span class="badge">Kompetisi</span></div>
+      <details class="card-more"><summary>Deep Dive</summary>
+        <h4>Langkah</h4><ol>
+          <li>Notebook publik terstruktur: EDA → baseline → iterasi → insight</li>
+          <li>Cross-validation yang benar (tidak overfit ke LB)</li>
+          <li>Ensembling sederhana (averaging/stacking)</li>
+          <li>Tulis ringkasan pelajaran tiap kompetisi di README</li></ol>
+        <h4>Apa yang dipelajari</h4><ul><li>Budaya latihan &amp; benchmark terhadap orang lain</li><li>Rekam jejak publik yang bisa dicek rekruter</li></ul>
+      </details>
+      <div class="stack"><span class="chip">Kaggle</span><span class="chip">Jupyter</span><span class="chip">scikit-learn</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="sec-head">
+    <p class="tag">02 · Learning Path</p>
+    <h2>Roadmap 6 Bulan</h2>
+    <p>Urutan pengerjaan yang disarankan: fondasi dulu, model kemudian, deploy selalu menyertai.</p>
+  </div>
+  <div class="road">
+    <div class="phase"><div class="phase-num">P1</div><div>
+      <h3>Fondasi (Bulan 1–2)</h3>
+      <p>DS-001 EDA &amp; Dashboard · DS-002 Statistik &amp; A/B Testing · DS-010 mulai pipeline ETL.</p>
+      <div class="meta">Fokus: <b>Python, pandas, SQL, statistik inferensial</b> · Output: notebook terdokumentasi + 1 dashboard</div>
+    </div></div>
+    <div class="phase"><div class="phase-num">P2</div><div>
+      <h3>Classical ML (Bulan 2–4)</h3>
+      <p>DS-003 Churn · DS-004 Regresi+API · DS-005 Clustering · DS-012 Kaggle Titanic &amp; House Prices.</p>
+      <div class="meta">Fokus: <b>pipeline ML, evaluasi yang benar, deployment pertama</b> · Output: 2 model ter-deploy</div>
+    </div></div>
+    <div class="phase"><div class="phase-num">P3</div><div>
+      <h3>Specialisasi (Bulan 4–5)</h3>
+      <p>DS-006 Time Series · DS-007 Sentimen ID · DS-008 Rekomendasi · DS-009 Transfer Learning.</p>
+      <div class="meta">Fokus: <b>pilih 2 jalur yang paling diminati (NLP/CV/Forecasting)</b> · Output: 2 proyek unggulan</div>
+    </div></div>
+    <div class="phase"><div class="phase-num">P4</div><div>
+      <h3>Modern Stack &amp; Polish (Bulan 5–6)</h3>
+      <p>DS-011 RAG Chatbot · website portofolio ini · rapikan GitHub: README, pin repo terbaik, cleanup.</p>
+      <div class="meta">Fokus: <b>aplikasi LLM + personal branding teknis</b> · Output: portofolio siap kirim lamaran</div>
+    </div></div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="sec-head">
+    <p class="tag">03 · Arsenal</p>
+    <h2>Tech Stack</h2>
+  </div>
+  <div class="matrix-grid">
+    <div class="tool"><b>Python</b><span>pandas, numpy, scikit-learn</span></div>
+    <div class="tool"><b>SQL</b><span>PostgreSQL, window functions, CTE</span></div>
+    <div class="tool"><b>Visualisasi</b><span>Matplotlib, Seaborn, Plotly, Streamlit</span></div>
+    <div class="tool"><b>ML Terapan</b><span>XGBoost, LightGBM, SHAP</span></div>
+    <div class="tool"><b>Deep Learning</b><span>PyTorch, TensorFlow/Keras</span></div>
+    <div class="tool"><b>NLP</b><span>HuggingFace, IndoBERT, TF-IDF</span></div>
+    <div class="tool"><b>MLOps-lite</b><span>FastAPI, Docker, GitHub Actions</span></div>
+    <div class="tool"><b>LLM &amp; RAG</b><span>LangChain, FAISS/Chroma, Ollama</span></div>
+    <div class="tool"><b>Tools</b><span>Git, Jupyter, VS Code, Linux CLI</span></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec-head">
+    <p class="tag">04 · Uplink</p>
+    <h2>Kontak</h2>
+    <p>Repo kode untuk setiap proyek ditautkan ke profil GitHub. Terbuka untuk kolaborasi, magang, dan proyek data sains.</p>
+  </div>
+  <div class="cta-row">
+    <a class="btn" href="https://github.com/ghani24ep10007-spec" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn ghost" href="https://ghani24ep10007-spec.github.io/" target="_blank" rel="noopener">Profil &amp; Cyber Telemetry Lab</a>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <span>▚ DATA//SCIENCE//LAB — dibangun sebagai peta jalan portofolio Junior Data Science</span>
+    <span>© <span id="yr"></span> Rizqi Ghani Adinata · <a href="https://github.com/ghani24ep10007-spec/data-science-lab">source repo</a></span>
+  </div>
+</footer>
+
+<script>
+/* ---- matrix rain ---- */
+(function(){
+  const c=document.getElementById('matrix'),x=c.getContext('2d');
+  const chars="アカサ01ｦﾊﾐ01DESQLLM$$01";
+  let cols,drops;
+  function reset(){c.width=innerWidth;c.height=innerHeight;cols=Math.floor(c.width/16);drops=Array(cols).fill(1).map(()=>Math.random()*-100)}
+  reset();addEventListener('resize',reset);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  setInterval(()=>{
+    x.fillStyle='rgba(5,10,7,.08)';x.fillRect(0,0,c.width,c.height);
+    x.font='14px monospace';
+    for(let i=0;i<cols;i++){
+      const ch=chars[Math.floor(Math.random()*chars.length)];
+      x.fillStyle=Math.random()>.975?'#4dff9e':'rgba(43,213,127,.55)';
+      x.fillText(ch,i*16,drops[i]*16);
+      if(drops[i]*16>c.height&&Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    }
+  },60);
+})();
+
+/* ---- typing effect ---- */
+(function(){
+  const lines=["python train_churn.py --cv 5  && deploy --api","jupyter nbconvert --to markdown ds-007.ipynb","git commit -m 'feat: baseline IndoBERT macro-F1 0.87'","sql> SELECT segment, AVG(revenue) FROM rfm GROUP BY 1;"];
+  const el=document.getElementById('typed');let li=0,ci=0,del=false;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=lines[0];return}
+  (function tick(){
+    const s=lines[li];
+    el.textContent=s.slice(0,ci);
+    if(!del&&ci<s.length){ci++;setTimeout(tick,45)}
+    else if(!del){del=true;setTimeout(tick,1600)}
+    else if(ci>0){ci--;setTimeout(tick,18)}
+    else{del=false;li=(li+1)%lines.length;setTimeout(tick,300)}
+  })();
+})();
+
+/* ---- terminal boot log ---- */
+(function(){
+  const out=document.getElementById('term-out');
+  const log=[
+    ['dim','[boot]加载 project atlas v1.0 ...'],
+    ['ok','[ok] 12 proyek terindeks (DS-001..DS-012)'],
+    ['cy','[net] scanning junior-ds skill graph ...'],
+    ['warn','[warn] 3 proyek masih status planned'],
+    ['mg','[llm] RAG module: queued for P4'],
+    ['ok','[done] roadmap: P1→P4 dalam 6 bulan'],
+    ['dim','[hint] gunakan filter kategori di bawah']
+  ];
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+    out.innerHTML=log.map(([k,t])=>`<div class="${k}">${t}</div>`).join('');return;
+  }
+  let i=0;
+  (function next(){
+    if(i>=log.length){out.innerHTML+='<div class="dim">lab@ds:~$ <span class="caret">&nbsp;</span></div>';return}
+    const [k,t]=log[i++];
+    const d=document.createElement('div');d.className=k;d.textContent=t;
+    out.appendChild(d);
+    setTimeout(next,450);
+  })();
+})();
+
+/* ---- category filter ---- */
+(function(){
+  const btns=document.querySelectorAll('.filter-btn');
+  const cards=document.querySelectorAll('#grid .card');
+  btns.forEach(b=>b.addEventListener('click',()=>{
+    btns.forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const f=b.dataset.f;
+    cards.forEach(c=>{c.hidden=!(f==='all'||c.dataset.cat===f)});
+  }));
+})();
+
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
