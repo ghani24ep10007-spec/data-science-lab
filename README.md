@@ -53,3 +53,8 @@ GitHub Pages (branch `main`, folder `/`). Lihat **Settings → Pages**.
 
 ---
 © Rizqi Ghani Adinata · Dibuat dengan HTML/CSS/JS murni, tema terminal hacker.
+
+
+## Laravel application
+
+A Laravel 13 dashboard version of this portfolio is available in the [MK Data Science](MK%20Data%20Science/) folder. See [its setup and Cloud deployment guide](MK%20Data%20Science/README.md).
