@@ -24,9 +24,9 @@
                 <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span> Ringkasan <span class="active-dot"></span></a>
                 <a class="nav-link" href="#projects"><span class="nav-icon">▤</span> Proyek <span class="nav-count">5</span></a>
                 <a class="nav-link" href="#insights"><span class="nav-icon">⌁</span> Insight</a>
-                <a class="nav-link" href="#projects"><span class="nav-icon">▦</span> Dataset</a>
+                <a class="nav-link" href="#studio"><span class="nav-icon">▦</span> Studio data</a>
                 <p class="nav-label nav-label-spaced">RUANG KERJA</p>
-                <a class="nav-link" href="#projects"><span class="nav-icon">◇</span> Pembelajaran</a>
+                <a class="nav-link" href="#learning"><span class="nav-icon">◇</span> Pembelajaran</a>
                 <a class="nav-link" href="#projects"><span class="nav-icon">◷</span> Aktivitas</a>
             </nav>
             <div class="sidebar-bottom">
@@ -43,8 +43,8 @@
             </header>
             <section class="page-content">
                 <div class="welcome-row">
-                    <div><p class="eyebrow"><span class="sun-icon">☀</span> SELAMAT DATANG KEMBALI</p><h1>Halo, Ghani <span class="wave">✦</span></h1><p class="welcome-copy">Ini perkembangan ruang data science kamu. Siap menemukan insight baru?</p></div>
-                    <a class="primary-button" href="#projects"><span>＋</span> Buat proyek baru</a>
+                    <div><p class="eyebrow"><span class="sun-icon">☀</span> RUANG BELAJAR DATA SCIENCE</p><h1>Belajar data, selangkah demi selangkah <span class="wave">✦</span></h1><p class="welcome-copy">Materi praktis, dataset contoh, dan studio analisis dalam satu tempat.</p></div>
+                    <a class="primary-button" href="#learning"><span>▶</span> Mulai belajar</a>
                 </div>
 
                 <div class="stat-grid" aria-label="Ringkasan statistik">
@@ -53,6 +53,24 @@
                     <article class="stat-card"><div class="stat-top"><span>Dataset dianalisis</span><span class="stat-icon icon-teal">▦</span></div><div class="stat-value">28</div><div class="stat-foot"><span class="trend up">↗ 12%</span><span>dari bulan lalu</span></div><div class="sparkline spark-teal" aria-hidden="true"><svg viewBox="0 0 112 32"><path d="M1 26 15 19 28 21 42 16 56 18 70 8 84 13 98 4 111 6"/></svg></div></article>
                     <article class="stat-card"><div class="stat-top"><span>Insight tersimpan</span><span class="stat-icon icon-amber">✧</span></div><div class="stat-value">36</div><div class="stat-foot"><span class="trend up">↗ 8%</span><span>dari bulan lalu</span></div><div class="sparkline spark-amber" aria-hidden="true"><svg viewBox="0 0 112 32"><path d="M1 25 15 22 28 15 42 19 56 12 70 15 84 8 98 11 111 3"/></svg></div></article>
                 </div>
+
+                <section class="learning-section" id="learning">
+                    <div class="section-intro"><div><p class="eyebrow">JALUR BELAJAR · PARETO 80/20</p><h2>Fokus pada konsep yang paling sering dipakai</h2><p>Empat langkah singkat untuk membawa dataset mentah menjadi insight yang bisa dijelaskan.</p></div><span class="time-chip">± 2 jam belajar</span></div>
+                    <div class="lesson-grid">
+                        <article class="lesson-card"><span class="lesson-number">01</span><span class="lesson-symbol">▦</span><h3>Pahami data</h3><p>Kenali baris, kolom, tipe data, dan pertanyaan analisis sebelum menghitung.</p><div class="lesson-meta"><span>15 menit</span><span>Dasar</span></div></article>
+                        <article class="lesson-card"><span class="lesson-number">02</span><span class="lesson-symbol lilac">⌁</span><h3>Bersihkan & ringkas</h3><p>Temukan nilai kosong, duplikat, rentang, rata-rata, dan median.</p><div class="lesson-meta"><span>30 menit</span><span>Praktik</span></div></article>
+                        <article class="lesson-card"><span class="lesson-number">03</span><span class="lesson-symbol mint">▥</span><h3>Visualisasikan</h3><p>Pilih grafik yang tepat: batang untuk membandingkan, garis untuk tren.</p><div class="lesson-meta"><span>30 menit</span><span>Praktik</span></div></article>
+                        <article class="lesson-card"><span class="lesson-number">04</span><span class="lesson-symbol peach">✧</span><h3>Ceritakan insight</h3><p>Tulis temuan, bukti, keterbatasan, dan langkah berikutnya.</p><div class="lesson-meta"><span>45 menit</span><span>Proyek mini</span></div></article>
+                    </div>
+                </section>
+
+                <section class="panel studio-panel" id="studio">
+                    <div class="panel-heading"><div><p class="eyebrow">STUDIO DATA · PRIVAT DI PERANGKAT</p><h2>Jelajahi dataset tanpa mengirimkannya ke server</h2><p>Unggah CSV (maks. 5 MB), atau mulai dengan dataset simulasi. Analisis berjalan di browser.</p></div><span class="privacy-chip">🔒 Lokal di browser</span></div>
+                    <div class="studio-controls"><label class="upload-control">↑ <span>Pilih file CSV</span><input type="file" accept=".csv,text/csv" data-csv-upload></label><button class="export-button" type="button" data-load-sample>Muat data contoh</button><button class="export-button" type="button" data-print-report>⇩ <span>Cetak / simpan PDF</span></button><span class="studio-status" data-studio-status>Belum ada dataset</span></div>
+                    <div class="studio-metrics" data-studio-metrics aria-live="polite"><div><small>Baris</small><b data-rows>—</b></div><div><small>Kolom</small><b data-cols>—</b></div><div><small>Nilai kosong</small><b data-missing>—</b></div><div><small>Kolom angka</small><b data-numeric>—</b></div></div>
+                    <div class="data-preview-wrap"><table class="data-preview" data-data-preview><tbody><tr><td>Pilih CSV atau muat dataset contoh untuk melihat pratinjau.</td></tr></tbody></table></div>
+                    <div class="data-insight" data-data-insight hidden></div>
+                </section>
 
                 <div class="content-grid">
                     <section class="panel chart-panel" id="insights">
@@ -82,7 +100,7 @@
                     </tbody></table><div class="empty-state" data-empty-state hidden>Tidak ada proyek yang cocok dengan pencarian.</div></div>
                     <div class="table-footer"><span>Menampilkan <b data-visible-count>{{ count($projects) }}</b> dari {{ $totalProjects }} proyek</span><a href="#projects">Kelola proyek <span>→</span></a></div>
                 </section>
-                <footer class="page-footer"><span>© {{ date('Y') }} Skydata Studio <span>·</span> MK Data Science</span><span>Dirancang untuk belajar, dibuat untuk berkembang <span>✦</span></span></footer>
+                <footer class="page-footer"><span>© {{ date('Y') }} Skydata Studio <span>·</span> MK Data Science</span><span>Data contoh bersifat simulasi <span>✦</span></span></footer>
             </section>
         </main>
     </div>
