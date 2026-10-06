@@ -25,10 +25,11 @@ php artisan serve
 
 Buka alamat yang ditampilkan oleh `php artisan serve`. Untuk aset produksi, jalankan `npm run build`.
 
-Studio CSV saat ini memproses berkas maksimum 5 MB dan hingga 5.000 baris di browser. Dataset demo adalah data simulasi, bukan data bisnis nyata. Statistik ringkasan dihitung dari sel numerik; kolom kosong diabaikan.
+Studio CSV saat ini memproses berkas maksimum 5 MB dan hingga 5.000 baris di browser, serta mengenali pemisah koma, titik koma, atau tab. Dataset demo adalah data simulasi, bukan data bisnis nyata. Statistik ringkasan dihitung dari sel numerik; kolom kosong diabaikan.
 
 ## Deployment
 
 Aplikasi Laravel memerlukan runtime PHP. Gunakan host yang mendukung Laravel (misalnya Laravel Cloud atau VPS) untuk aplikasi, lalu arahkan DNS/proxy Cloudflare ke host tersebut. GitHub berfungsi sebagai repositori dan sumber deployment bila platform hosting dikonfigurasi menghubungkan repo ini. GitHub Pages hanya untuk situs statis dan tidak menjalankan backend Laravel/PHP.
 
 Langkah dasar pada hosting Laravel: set document root ke folder `public`, gunakan PHP 8.3+, jalankan `composer install --no-dev --optimize-autoloader` dan `npm ci && npm run build`, set `APP_ENV=production` dan `APP_DEBUG=false`, buat `APP_KEY`, lalu jalankan migrasi bila kelak database ditambahkan.
+
