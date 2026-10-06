@@ -63,6 +63,15 @@ const insight = document.querySelector('[data-data-insight]');
 const setText = (selector, value) => { const node = document.querySelector(selector); if (node) node.textContent = value; };
 
 function parseCsv(text) {
+    text = text.replace(/^\uFEFF/, '');
+    const delimiterCounts = { ',': 0, ';': 0, '\t': 0 };
+    let firstRowQuoted = false;
+    for (const char of text) {
+        if (char === '"') firstRowQuoted = !firstRowQuoted;
+        else if (!firstRowQuoted && Object.hasOwn(delimiterCounts, char)) delimiterCounts[char]++;
+        else if (!firstRowQuoted && (char === '\n' || char === '\r')) break;
+    }
+    const delimiter = Object.entries(delimiterCounts).sort((a, b) => b[1] - a[1])[0][0];
     const result = []; let row = [], cell = '', quoted = false;
     for (let i = 0; i < text.length; i++) {
         const char = text[i];
@@ -71,7 +80,7 @@ function parseCsv(text) {
             else if (char === '"') quoted = false;
             else cell += char;
         } else if (char === '"') quoted = true;
-        else if (char === ',') { row.push(cell); cell = ''; }
+        else if (char === delimiter) { row.push(cell); cell = ''; }
         else if (char === '\n' || char === '\r') {
             if (char === '\r' && text[i + 1] === '\n') i++;
             row.push(cell); cell = '';
@@ -103,7 +112,8 @@ function showDataset({ headers, rows }, name) {
     numeric.slice(0, 4).forEach(({ header, values }) => {
         const sorted = [...values].sort((a, b) => a - b);
         const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
-        const median = sorted[Math.floor(sorted.length / 2)];
+        const middle = Math.floor(sorted.length / 2);
+        const median = sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
         const p = document.createElement('p');
         p.textContent = `${header}: rata-rata ${mean.toLocaleString('id-ID', { maximumFractionDigits: 2 })} · median ${median.toLocaleString('id-ID', { maximumFractionDigits: 2 })} · rentang ${sorted[0]}–${sorted.at(-1)}`;
         insight.append(p);
@@ -122,3 +132,4 @@ document.querySelector('[data-load-sample]')?.addEventListener('click', () => {
     showDataset({ headers: records[0], rows: records.slice(1) }, 'Dataset simulasi penjualan');
 });
 document.querySelector('[data-print-report]')?.addEventListener('click', () => window.print());
+
