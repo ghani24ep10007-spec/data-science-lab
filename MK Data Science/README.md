@@ -1,44 +1,34 @@
-# Skydata Studio — MK Data Science
+# Skydata — MK Data Science
 
-Dashboard portofolio Data Science berbasis Laravel 13 dengan antarmuka responsif bertema biru awan. Tampilan ini mengadaptasi pola dashboard POS pada [web-pos-unugha](https://github.com/mastzy/web-pos-unugha): navigasi samping, ringkasan metrik, grafik, target mingguan, dan tabel proyek.
+Aplikasi belajar Data Science berbahasa Indonesia, dibangun dengan Laravel 13 dan Vite. Dirancang agar pemula bisa memahami alur analisis lewat materi ringkas dan latihan langsung.
 
-> Angka, nama proyek, dan aktivitas pada halaman saat ini adalah data demo untuk tugas mata kuliah. Dashboard belum memakai login atau basis data.
+## Fitur inti
 
-## Teknologi
+- **Jalur belajar 80/20**: memahami data, membersihkan dan meringkas, memilih visualisasi, lalu menyampaikan insight.
+- **Studio CSV privat**: baca pratinjau, jumlah baris/kolom, nilai kosong, rata-rata, median, dan rentang angka. Berkas dibaca di browser, tidak dikirim ke server.
+- **Dataset simulasi** penjualan untuk memulai tanpa berkas sendiri.
+- **Cetak laporan / simpan PDF** melalui dialog cetak browser.
+- Antarmuka responsif dengan palet biru awan.
 
-- Laravel 13 · PHP 8.3+ · Node.js 22+
-- Blade, Vite, custom responsive CSS
-- JavaScript untuk navigasi seluler, filter proyek, dan ekspor CSV
+## Menjalankan lokal
 
-## Menjalankan secara lokal
+Persyaratan: PHP 8.3+, Composer, Node.js 22+, dan npm.
 
-    git clone https://github.com/ghani24ep10007-spec/data-science-lab.git
-    cd "data-science-lab/MK Data Science"
-    composer install
-    Copy-Item .env.example .env
-    php artisan key:generate
-    npm install
-    npm run build
-    php artisan serve
+```powershell
+composer install
+Copy-Item .env.example .env
+php artisan key:generate
+npm install
+npm run dev
+php artisan serve
+```
 
-Buka http://127.0.0.1:8000. Untuk pengembangan aset, jalankan npm run dev di terminal terpisah.
+Buka alamat yang ditampilkan oleh `php artisan serve`. Untuk aset produksi, jalankan `npm run build`.
 
-## Deploy ke GitHub dan Cloudflare
+Studio CSV saat ini memproses berkas maksimum 5 MB dan hingga 5.000 baris di browser. Dataset demo adalah data simulasi, bukan data bisnis nyata. Statistik ringkasan dihitung dari sel numerik; kolom kosong diabaikan.
 
-Repository: [ghani24ep10007-spec/data-science-lab](https://github.com/ghani24ep10007-spec/data-science-lab), folder MK Data Science.
+## Deployment
 
-Aplikasi memakai PHP dan Laravel, sehingga perlu runtime PHP. Cloudflare Pages tidak menjalankan PHP. Untuk deployment Laravel yang tetap memakai jaringan edge Cloudflare:
+Aplikasi Laravel memerlukan runtime PHP. Gunakan host yang mendukung Laravel (misalnya Laravel Cloud atau VPS) untuk aplikasi, lalu arahkan DNS/proxy Cloudflare ke host tersebut. GitHub berfungsi sebagai repositori dan sumber deployment bila platform hosting dikonfigurasi menghubungkan repo ini. GitHub Pages hanya untuk situs statis dan tidak menjalankan backend Laravel/PHP.
 
-1. Hubungkan repository dan branch main ke [Laravel Cloud](https://cloud.laravel.com/).
-2. Pilih subfolder aplikasi MK Data Science, lalu gunakan runtime PHP 8.3 atau yang kompatibel.
-3. Pilih Node.js 22. Gunakan build command composer install --no-dev && npm install && npm run build.
-4. Tambahkan domain aplikasi melalui pengaturan domain Laravel Cloud. Ikuti instruksi DNS yang ditampilkan untuk menghubungkan domain di Cloudflare. Simpan APP_KEY sebagai secret, set APP_ENV=production dan APP_DEBUG=false, lalu deploy.
-
-Laravel Cloud menghubungkan aplikasi ke Git dan menggunakan Cloudflare untuk edge network serta mitigasi DDoS. Pengaturan deployment PHP ini berbeda dari Cloudflare Pages. Aplikasi saat ini belum membutuhkan database atau perintah migrasi.
-
-## Catatan pengembangan
-
-- Tabel proyek diisi dari controller route Laravel (routes/web.php) dan dirender memakai Blade.
-- Isi pencarian dan status dipakai bersama saat ekspor CSV.
-- Untuk memakai data sungguhan, sambungkan daftar proyek dan metrik ke migration, model, serta database Laravel.
-- Jangan commit .env, kredensial, atau kunci aplikasi.
+Langkah dasar pada hosting Laravel: set document root ke folder `public`, gunakan PHP 8.3+, jalankan `composer install --no-dev --optimize-autoloader` dan `npm ci && npm run build`, set `APP_ENV=production` dan `APP_DEBUG=false`, buat `APP_KEY`, lalu jalankan migrasi bila kelak database ditambahkan.
